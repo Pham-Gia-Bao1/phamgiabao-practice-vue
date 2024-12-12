@@ -1,9 +1,9 @@
 <template>
   <div class="dictionary-container">
-    <h1 class="title">Tử Điển</h1>
+    <h1 class="title">Từ Điển</h1>
     <div class="search-container">
-      <input type="text" v-model="searchTerm" placeholder="hello" class="search-input">
-      <button @click="search" class="search-button">Tìm kiếm</button>
+      <input type="text" v-model="translateTerm" placeholder="hello" class="search-input" />
+      <button @click="search" class="translate-button">Dịch</button>
     </div>
     <p v-if="translation" class="translation">{{ translation }}</p>
   </div>
@@ -15,25 +15,35 @@ export default {
     return {
       searchTerm: '',
       translation: '',
-    };
+    }
   },
   methods: {
     search() {
-      const url = `http://localhost:8080/api/dictionary?word=${this.searchTerm}`;
+      const url = `http://localhost:8080/api/dictionary?word=${this.translateTerm}`
 
       fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          console.log('helo' + data)
-          this.translation = data;
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          // Try to parse the response as JSON
+          return response.json().catch(() => response.text())
         })
-        .catch(error => {
-          console.error(error);
-          this.translation = 'Error translating text';
-        });
+        .then((data) => {
+          // Check if data is a string or an object
+          if (typeof data === 'string') {
+            this.translation = data // Handle plain text response
+          } else {
+            this.translation = data.translation // Access the translation property
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          this.translation = 'Error translating text'
+        })
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -75,7 +85,7 @@ export default {
   height: 40px;
   padding: 10px;
   font-size: 16px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
