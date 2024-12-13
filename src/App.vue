@@ -11,10 +11,8 @@ export default {
       <router-link to="/dictionary" class="nav-link">Dictionary</router-link>
       <router-link to="/calculator" class="nav-link">Calculator</router-link>
       <router-link to="/employees" class="nav-link">Employees</router-link>
-
       <div>
         <input type="text" class="search-input" placeholder="Images, #tags, @users oh my!" />
-
         <i class="fa-solid fa-magnifying-glass"></i>
       </div>
       <div class="button-container">
