@@ -1,5 +1,25 @@
 <template>
   <div class="container">
+    <!-- Form tìm kiếm -->
+    <div class="search-form">
+      <input type="text" v-model="searchParams.name" placeholder="Tên nhân viên" />
+      <input type="date" v-model="searchParams.dobFrom" />
+      <input type="date" v-model="searchParams.dobTo" />
+      <select v-model="searchParams.gender">
+        <option value="">Tất cả</option>
+        <option value="MALE">Nam</option>
+        <option value="FEMALE">Nữ</option>
+      </select>
+      <select v-model="searchParams.salaryRange">
+        <option value="">Tất cả mức lương</option>
+        <option value="lt5">Dưới 5 triệu</option>
+        <option value="5-10">5-10 triệu</option>
+        <option value="10-20">10-20 triệu</option>
+        <option value="gt20">Trên 20 triệu</option>
+      </select>
+      <button class="btn btn-search" @click="fetchEmployees">Tìm kiếm</button>
+    </div>
+
     <div class="header">
       <h1 class="title">Quản Lý Nhân Viên</h1>
       <button class="btn btn-add" @click="showAddForm">+ Thêm Mới</button>
@@ -18,22 +38,26 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(employee, index) in employees" :key="employee.id">
-            <td>{{ index + 1 }}</td>
-            <td>{{ employee.name }}</td>
-            <td>{{ formatDate(employee.dob) }}</td>
-            <td>{{ employee.gender === 'MALE' ? 'Nam' : 'Nữ' }}</td>
-            <td>{{ formatCurrency(employee.salary) }}</td>
-            <td>
-              <button class="btn btn-primary" @click="showUpdateForm(employee)">Cập nhật</button>
-              <button class="btn btn-danger" @click="deleteEmployee(employee.id)">Xóa</button>
-              <button class="btn btn-info" @click="showDetails(employee)">Xem chi tiết</button>
-            </td>
+          <template v-if="employees.length > 0">
+            <tr v-for="(employee, index) in employees" :key="employee.id">
+              <td>{{ index + 1 }}</td>
+              <td>{{ employee.name }}</td>
+              <td>{{ formatDate(employee.dob) }}</td>
+              <td>{{ employee.gender === 'MALE' ? 'Nam' : 'Nữ' }}</td>
+              <td>{{ formatCurrency(employee.salary) }}</td>
+              <td>
+                <button class="btn btn-primary" @click="showUpdateForm(employee)">Cập nhật</button>
+                <button class="btn btn-danger" @click="deleteEmployee(employee.id)">Xóa</button>
+                <button class="btn btn-info" @click="showDetails(employee)">Xem chi tiết</button>
+              </td>
+            </tr>
+          </template>
+          <tr v-else>
+            <td colspan="6" class="no-data">Không tìm thấy nhân viên</td>
           </tr>
         </tbody>
       </table>
     </div>
-
     <!-- Form thêm/sửa -->
     <div v-if="showForm" class="modal">
       <div class="modal-content">
@@ -97,14 +121,34 @@ export default {
         gender: 'MALE',
         salary: 0,
       },
+      searchParams: {
+        name: '',
+        dobFrom: '',
+        dobTo: '',
+        gender: '',
+        salaryRange: '',
+      },
       showDetailModal: false,
       selectedEmployee: {},
     }
   },
   methods: {
     async fetchEmployees() {
-      const response = await axios.get('http://localhost:8080/api/employees')
-      this.employees = response.data.data
+      try {
+        const { name, dobFrom, dobTo, gender, salaryRange } = this.searchParams
+        const response = await axios.get('http://localhost:8080/api/employees', {
+          params: {
+            name,
+            dobFrom,
+            dobTo,
+            gender,
+            salaryRange,
+          },
+        })
+        this.employees = response.data.data
+      } catch (error) {
+        console.error(error)
+      }
     },
     formatDate(date) {
       return new Date(date).toLocaleDateString('vi-VN')
@@ -123,18 +167,26 @@ export default {
       this.showForm = true
     },
     async handleSubmit() {
-      if (this.formMode === 'add') {
-        await axios.post('http://localhost:8080/api/employees', this.formData)
-      } else if (this.formMode === 'update') {
-        await axios.put(`http://localhost:8080/api/employees/${this.formData.id}`, this.formData)
+      try {
+        if (this.formMode === 'add') {
+          await axios.post('http://localhost:8080/api/employees', this.formData)
+        } else if (this.formMode === 'update') {
+          await axios.put(`http://localhost:8080/api/employees/${this.formData.id}`, this.formData)
+        }
+        this.closeForm()
+        this.fetchEmployees()
+      } catch (error) {
+        console.error(error)
       }
-      this.closeForm()
-      this.fetchEmployees()
     },
     async deleteEmployee(id) {
-      if (confirm('Bạn có chắc chắn muốn xóa nhân viên này không?')) {
-        await axios.delete(`http://localhost:8080/api/employees/${id}`)
-        this.fetchEmployees()
+      try {
+        if (confirm('Bạn có chắc chắn muốn xóa nhân viên này không?')) {
+          await axios.delete(`http://localhost:8080/api/employees/${id}`)
+          this.fetchEmployees()
+        }
+      } catch (error) {
+        console.error(error)
       }
     },
     showDetails(employee) {
@@ -268,5 +320,71 @@ export default {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+/* Container form tìm kiếm */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+/* Input chung và select */
+.search-form input,
+.search-form select {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+  border-color: #409eff;
+  box-shadow: 0 0 5px rgba(64, 158, 255, 0.6);
+}
+
+/* Nút tìm kiếm */
+.btn-search {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #409eff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.2s ease-in-out;
+}
+
+.btn-search:hover {
+  background-color: #337ecc;
+  transform: scale(1.05);
+}
+
+.btn-search:active {
+  background-color: #295bb3;
+  transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-form input,
+  .search-form select,
+  .btn-search {
+    width: 100%;
+  }
 }
 </style>
