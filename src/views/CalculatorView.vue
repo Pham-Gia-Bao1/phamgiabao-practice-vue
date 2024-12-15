@@ -31,7 +31,6 @@
       </div>
       <button type="submit" class="btn-submit">Calculate</button>
     </form>
-
     <div v-if="result !== null" class="result">
       <h2>Result: {{ result }}</h2>
     </div>
@@ -40,10 +39,8 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
@@ -74,7 +71,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 /* General Styles */
 .calculator {
@@ -88,31 +84,26 @@ export default {
   font-family: "Arial", sans-serif;
   text-align: center;
 }
-
 h1 {
   margin-bottom: 20px;
   color: #333;
 }
-
 /* Form Styles */
 .calculator-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
   text-align: left;
 }
-
 label {
   font-weight: bold;
   margin-bottom: 5px;
   color: #555;
 }
-
 input,
 select {
   padding: 10px;
@@ -122,12 +113,10 @@ select {
   outline: none;
   transition: border-color 0.3s;
 }
-
 input:focus,
 select:focus {
   border-color: #ff9800;
 }
-
 /* Button Styles */
 .btn-submit {
   padding: 10px 15px;
@@ -140,11 +129,9 @@ select:focus {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .btn-submit:hover {
   background-color: #e68900;
 }
-
 /* Result and Error Styles */
 .result {
   margin-top: 20px;
@@ -155,7 +142,6 @@ select:focus {
   color: #00796b;
   font-weight: bold;
 }
-
 .error {
   margin-top: 20px;
   padding: 10px;

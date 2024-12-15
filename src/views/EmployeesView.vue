@@ -19,12 +19,10 @@
       </select>
       <button class="btn btn-search" @click="fetchEmployees">Tìm kiếm</button>
     </div>
-
     <div class="header">
       <h1 class="title">Quản Lý Nhân Viên</h1>
       <button class="btn btn-add" @click="showAddForm">+ Thêm Mới</button>
     </div>
-
     <div class="table-container">
       <table class="styled-table">
         <thead>
@@ -104,10 +102,8 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios'
-
 export default {
   data() {
     return {
@@ -205,7 +201,6 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 .container {
   max-width: 95%;
@@ -332,7 +327,6 @@ export default {
   background-color: #ffffff;
   border-radius: 10px;
 }
-
 /* Input chung và select */
 .search-form input,
 .search-form select {
@@ -343,13 +337,11 @@ export default {
   outline: none;
   transition: all 0.3s ease-in-out;
 }
-
 .search-form input:focus,
 .search-form select:focus {
   border-color: #409eff;
   box-shadow: 0 0 5px rgba(64, 158, 255, 0.6);
 }
-
 /* Nút tìm kiếm */
 .btn-search {
   padding: 10px 20px;
@@ -364,23 +356,19 @@ export default {
     background-color 0.3s ease-in-out,
     transform 0.2s ease-in-out;
 }
-
 .btn-search:hover {
   background-color: #337ecc;
   transform: scale(1.05);
 }
-
 .btn-search:active {
   background-color: #295bb3;
   transform: scale(0.95);
 }
-
 /* Responsive */
 @media (max-width: 768px) {
   .search-form {
     flex-direction: column;
   }
-
   .search-form input,
   .search-form select,
   .btn-search {

@@ -8,7 +8,6 @@
     <p v-if="translation" class="translation">{{ translation }}</p>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -20,7 +19,6 @@ export default {
   methods: {
     search() {
       const url = `http://localhost:8080/api/dictionary?word=${this.translateTerm}`
-
       fetch(url)
         .then((response) => {
           if (!response.ok) {
@@ -45,7 +43,6 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 .dictionary-container {
   max-width: 500px;
@@ -56,7 +53,6 @@ export default {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .title {
   text-align: center;
   margin-bottom: 20px;
@@ -64,13 +60,11 @@ export default {
   font-weight: bold;
   color: #333;
 }
-
 .search-container {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
 }
-
 .search-input {
   width: 70%;
   height: 40px;
@@ -79,7 +73,6 @@ export default {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 .search-button {
   width: 30%;
   height: 40px;
@@ -91,11 +84,9 @@ export default {
   border-radius: 5px;
   cursor: pointer;
 }
-
 .search-button:hover {
   background-color: #3e8e41;
 }
-
 .translation {
   text-align: center;
   margin-top: 20px;

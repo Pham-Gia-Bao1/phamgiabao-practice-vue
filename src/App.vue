@@ -23,7 +23,6 @@ export default {
   </nav>
   <router-view />
 </template>
-
 <style scoped>
 .navbar {
   background-color: #3b9dff; /* Dark background */
@@ -41,13 +40,11 @@ export default {
   margin: 0 auto; /* Center horizontally */
   width: 100%; /* Full width */
 }
-
 .logo {
   font-size: 24px; /* Logo font size */
   font-weight: bold; /* Logo font weight */
   color: white; /* Logo color */
 }
-
 .search-input {
   flex: 1; /* Make input take available space */
   margin: 0 20px; /* Margin on sides */
@@ -57,15 +54,12 @@ export default {
   background-color: #2c2f33; /* Background for input */
   color: white; /* Input text color */
 }
-
 .search-input::placeholder {
   color: #b0b3b7; /* Placeholder text color */
 }
-
 .button-container {
   display: flex; /* Flex layout for buttons */
 }
-
 .new-post-button {
   background-color: #1abc9c; /* New post button color */
   color: white; /* Text color */
@@ -75,7 +69,6 @@ export default {
   cursor: pointer; /* Pointer cursor */
   margin-right: 10px; /* Space between buttons */
 }
-
 .auth-button {
   background-color: transparent; /* No background */
   color: white; /* Text color */
@@ -87,15 +80,12 @@ export default {
     background-color 0.3s,
     border-color 0.3s; /* Transition effects */
 }
-
 .auth-button:hover {
   border-color: #1abc9c; /* Border color on hover */
 }
-
 .sign-in:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Background on hover */
 }
-
 .sign-up {
   background-color: #1abc9c; /* Sign up button color */
   color: white; /* Text color */
